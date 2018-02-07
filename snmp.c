@@ -8,17 +8,19 @@
 #define UINT32_TENTH (0xffffffff/10)
 #define UINT32_TENTHMOD (0xffffffff%10)
 
-uint8_t encode_oid(const char * oid_str, oid_t * oid)
+uint8_t encode_oid(const char * oid_str, data_t * oid)
 {
 	bool first = true;
 	char c = -1;
 	enum {NUM, DOT, EITHER} state;
 	int byteidx, stridx, tmplen, valid;
+	uint8_t * oid_bytes = (uint8_t *) oid->arr;
 	uint8_t tmp[5];
 	uint32_t current = 0;
 
 	byteidx = 0;
 	oid->len = 0;
+	oid->len_set = 1;
 	for (stridx = 0; c; ++stridx)
 	{
 		c = oid_str[stridx];
@@ -37,19 +39,19 @@ uint8_t encode_oid(const char * oid_str, oid_t * oid)
 					{
 						if (byteidx < MAX_OID_LEN) {
 							uint8_t bitset = tmplen ? 0x80 : 0x00;
-							oid->bytes[byteidx++] = tmp[tmplen] | bitset;
+							oid_bytes[byteidx++] = tmp[tmplen] | bitset;
 						} else {
 							return 0;
 						}
 					}
 					else if (first)
 					{
-						oid->bytes[byteidx] = tmp[tmplen];
+						oid_bytes[byteidx] = tmp[tmplen];
 						first = false;
 					}
 					else
 					{
-						oid->bytes[byteidx] = oid->bytes[byteidx] * 40 + tmp[tmplen];
+						oid_bytes[byteidx] = oid_bytes[byteidx] * 40 + tmp[tmplen];
 						++byteidx;
 					}
 				}
