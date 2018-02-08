@@ -19,8 +19,9 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 	uint32_t current = 0;
 
 	byteidx = 0;
+	oid->arr_len = 0;
 	oid->len = 0;
-	oid->len_set = 1;
+	oid->flags |= LEN_SET | PRINTABLE;
 	for (stridx = 0; c; ++stridx)
 	{
 		c = oid_str[stridx];
@@ -74,5 +75,6 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 		}
 	}
 
+	oid->arr_len = byteidx;
 	return oid->len = byteidx;
 }
