@@ -40,7 +40,7 @@ void encode_null(data_t * data)
 {
 	data->len = 0;
 	data->flags = LEN_SET | PRINTABLE;
-	data->type = 0x05;
+	data->type = TYPE_NULL;
 	data->arr_len = 0;
 	data->arr = NULL;
 }
@@ -55,7 +55,7 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 	uint8_t tmp[5];
 	uint32_t current = 0;
 
-	oid->type = 0x06;
+	oid->type = TYPE_OID;
 
 	byteidx = 0;
 	oid->arr_len = 0;

@@ -24,6 +24,9 @@ int calculate_len(data_t * data);
 /* encodes a data type as null; no prerequisites */
 void encode_null(data_t * data);
 
+
+#define TYPE_NULL 0x05
+#define TYPE_OID 0x06
 /* oid.arr should be preset to point to an array of uint8_t of size [MAX_OID_LEN] */
 uint8_t encode_oid(const char * oid_str, data_t * oid);
 
