@@ -27,7 +27,8 @@ void encode_null(data_t * data);
 /* oid.arr should be preset to point to an array of uint8_t of size [MAX_OID_LEN] */
 uint8_t encode_oid(const char * oid_str, data_t * oid);
 
-/* serializes data into a byte array, assuming max_bytes is large enough; return value is the length (in bytes) of the final encoded object */
+/*	serializes data into a byte array, assuming max_bytes is large enough
+	return value is the length (in bytes) of the final encoded object */
 int print_data(data_t * data, uint8_t * bytes, uint16_t max_bytes);
 
 #endif
