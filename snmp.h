@@ -21,6 +21,9 @@ typedef struct {
 /* recursively calculates the length of data; assumes that (flags | LEN_SET != 0) for all primitive data types */
 int calculate_len(data_t * data);
 
+/* encodes a data type as null; no prerequisites */
+void encode_null(data_t * data);
+
 /* oid.arr should be preset to point to an array of uint8_t of size [MAX_OID_LEN] */
 uint8_t encode_oid(const char * oid_str, data_t * oid);
 

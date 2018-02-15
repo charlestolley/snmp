@@ -36,6 +36,15 @@ int calculate_len(data_t * data)
 	return data->len;
 }
 
+void encode_null(data_t * data)
+{
+	data->len = 0;
+	data->flags = LEN_SET | PRINTABLE;
+	data->type = 0x05;
+	data->arr_len = 0;
+	data->arr = NULL;
+}
+
 uint8_t encode_oid(const char * oid_str, data_t * oid)
 {
 	bool first = true;
