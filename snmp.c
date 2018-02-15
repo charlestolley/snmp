@@ -51,7 +51,14 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 	char c = -1;
 	enum {NUM, DOT, EITHER} state;
 	int byteidx, stridx, tmplen;
-	uint8_t * oid_bytes = (uint8_t *) oid->arr;
+
+	uint8_t static_bytes[MAX_OID_LEN];
+	uint8_t * oid_bytes;
+	if (oid->arr == NULL)
+		oid_bytes = static_bytes;
+	else
+		oid_bytes = (uint8_t *) oid->arr;
+
 	uint8_t tmp[5];
 	uint32_t current = 0;
 
@@ -112,6 +119,12 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 		if (!valid) {
 			return 0;
 		}
+	}
+
+	if (oid_bytes == static_bytes)
+	{
+		oid->arr = malloc(byteidx);
+		strncpy((uint8_t*) oid->arr, static_bytes, byteidx);
 	}
 
 	oid->arr_len = byteidx;
