@@ -49,7 +49,7 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 {
 	bool first = true, valid;
 	char c = -1;
-	enum {NUM, DOT, EITHER} state;
+	enum {NUM, DOT, EITHER} state = EITHER;
 	int byteidx, stridx, tmplen;
 
 	uint8_t static_bytes[MAX_OID_LEN];
