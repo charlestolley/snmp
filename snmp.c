@@ -47,10 +47,10 @@ void encode_null(data_t * data)
 
 uint8_t encode_oid(const char * oid_str, data_t * oid)
 {
-	bool first = true;
+	bool first = true, valid;
 	char c = -1;
 	enum {NUM, DOT, EITHER} state;
-	int byteidx, stridx, tmplen, valid;
+	int byteidx, stridx, tmplen;
 	uint8_t * oid_bytes = (uint8_t *) oid->arr;
 	uint8_t tmp[5];
 	uint32_t current = 0;
@@ -106,7 +106,7 @@ uint8_t encode_oid(const char * oid_str, data_t * oid)
 				return 0; /* oid too large for our implementation */
 			current = current * 10 + digit;
 		} else {
-			valid = 0;
+			valid = false;
 		}
 
 		if (!valid) {
