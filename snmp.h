@@ -35,7 +35,7 @@ void encode_null(data_t * data);
 #define TYPE_OID 0x06
 /*	oid->arr should be preset to point to an array of uint8_t of at least size MAX_OID_LEN
 	if oid->arr is NULL, an array of size oid->len will be malloc'd (must be free'd by caller)*/
-uint8_t encode_oid(const char * oid_str, data_t * oid);
+uint8_t encode_oid(data_t * oid, const char * oid_str);
 
 /*	serializes data into a byte array, assuming max_bytes is large enough
 	return value is the length (in bytes) of the final encoded object */

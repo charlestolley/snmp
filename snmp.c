@@ -77,7 +77,7 @@ void encode_null(data_t * data)
 	data->arr = NULL;
 }
 
-uint8_t encode_oid(const char * oid_str, data_t * oid)
+uint8_t encode_oid(data_t * oid, const char * oid_str)
 {
 	bool first = true, valid;
 	char c = -1;
