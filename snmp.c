@@ -36,6 +36,30 @@ int calculate_len(data_t * data)
 	return data->len;
 }
 
+void encode_int(data_t * data, uint32_t number)
+{
+	uint8_t tmp[4];
+	uint8_t tmplen = 0;
+	do {
+		tmp[tmplen++] = number;
+		number >>= 8;
+	} while (number);
+
+	data->len = tmplen;
+	data->flags = LEN_SET | PRINTABLE;
+	data->type = TYPE_INT;
+	data->arr_len = tmplen;
+
+	if (data->arr == NULL)
+		data->arr = malloc(tmplen);
+
+	uint8_t * ptr = data->arr;
+	while (tmplen--)
+	{
+		*(ptr++) = tmp[tmplen];
+	}
+}
+
 void encode_null(data_t * data)
 {
 	data->len = 0;
