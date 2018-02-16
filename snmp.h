@@ -24,10 +24,13 @@ int calculate_len(data_t * data);
 /* if oid->arr is NULL, an array of length 4 will be malloc'd (must be free'd by caller) */
 void encode_int(data_t * data, uint32_t number);
 
+void encode_string(data_t * data, char * string, size_t len);
+
 /* encodes a data type as null; no prerequisites */
 void encode_null(data_t * data);
 
 #define TYPE_INT 0x02
+#define TYPE_OCTETSTR 0x04
 #define TYPE_NULL 0x05
 #define TYPE_OID 0x06
 /*	oid->arr should be preset to point to an array of uint8_t of at least size MAX_OID_LEN

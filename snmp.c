@@ -60,6 +60,14 @@ void encode_int(data_t * data, uint32_t number)
 	}
 }
 
+void encode_string(data_t * data, char * string, size_t len)
+{
+	data->arr_len = data->len = len ? len : strlen(string);
+	data->flags = LEN_SET | PRINTABLE;
+	data->type = TYPE_OCTETSTR;
+	data->arr = string;
+}
+
 void encode_null(data_t * data)
 {
 	data->len = 0;
