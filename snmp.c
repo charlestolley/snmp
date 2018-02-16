@@ -198,3 +198,79 @@ int print_data(data_t * data, uint8_t * bytes, uint16_t max_bytes)
 	}
 	return i;
 }
+
+void init_data(data_t * data, uint8_t type, uint16_t arr_len, void * arr)
+{
+	data->type = type;
+	data->arr_len = arr_len;
+	data->arr = arr;
+	data->flags = 0;
+}
+
+void print_bytes(const uint8_t * bytes, size_t n)
+{
+	size_t i;
+	for (i = 0; i < n; ++i)
+	{
+		if (i)
+			putchar(' ');
+		printf("%02x", bytes[i]);
+	}
+	putchar('\n');
+}
+
+void print_get_pdu(char * oid_str)
+{
+	static uint8_t bytes[MAX_DGRAM_LEN];
+	static uint8_t oid_bytes[MAX_OID_LEN];
+
+	/* Initialize packet structure */
+	data_t packet, varbind;
+	uint8_t err, err_idx, version;
+	uint8_t request_id[4];
+
+	struct {
+		data_t version;
+		data_t community;
+		data_t request_pdu;
+	} snmp;
+
+	init_data(&packet, TYPE_SEQUENCE, 3, &snmp);
+
+	struct {
+		data_t id;
+		data_t err;
+		data_t err_idx;
+		data_t varbind_list;
+	} request;
+
+	snmp.version.arr = &version;
+	encode_int(&snmp.version, 1);
+	encode_string(&snmp.community, "public", 0);
+	init_data(&snmp.request_pdu, 0xa0, 4, &request);
+
+	request.id.arr = request_id;
+	request.err.arr = &err;
+	request.err_idx.arr = &err_idx;
+
+	encode_int(&request.id, 0xfedcab98);
+	encode_int(&request.err, 0);
+	encode_int(&request.err_idx, 0);
+	init_data(&request.varbind_list, TYPE_SEQUENCE, 1, &varbind);
+
+	struct {
+		data_t oid;
+		data_t val;
+	} oid;
+	init_data(&varbind, TYPE_SEQUENCE, 2, &oid);
+
+	oid.oid.arr = oid_bytes;
+	encode_oid(&oid.oid, oid_str);
+	encode_null(&oid.val);
+
+	calculate_len(&packet);
+	/* Done initializing structure */
+
+	printf("length: %d\n", packet.len);
+	print_bytes(bytes, print_data(&packet, bytes, MAX_DGRAM_LEN));
+}

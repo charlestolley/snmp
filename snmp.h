@@ -37,6 +37,9 @@ void encode_null(data_t * data);
 	if oid->arr is NULL, an array of size oid->len will be malloc'd (must be free'd by caller)*/
 uint8_t encode_oid(data_t * oid, const char * oid_str);
 
+/* this is a development-grade function that composes a get request and prints the contents */
+void print_get_pdu(char * oid_str)
+
 /*	serializes data into a byte array, assuming max_bytes is large enough
 	return value is the length (in bytes) of the final encoded object */
 int print_data(data_t * data, uint8_t * bytes, uint16_t max_bytes);
